@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.company</groupId>
+	<artifactId>backend-users</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.2.5.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<name>backend-users</name>
+	<description>BackEnd Users for Spring Boot</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<fabric8.mode>openshift</fabric8.mode>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.9.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<version>3.5.42.fuse-770010-redhat-00001</version>
+
+			</plugin>
+			
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+		        <groupId>org.sonarsource.scanner.maven</groupId>
+		        <artifactId>sonar-maven-plugin</artifactId>
+		        <version>3.7.0.1746</version>
+		     </plugin>
+
+		</plugins>
+
+
+
+	</build>
+
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>fabric8-maven-plugin</artifactId>
+						
+						<configuration>
+							<generator>
+								<includes>
+									<include>spring-boot</include>
+								</includes>
+								<config>
+									<spring-boot>
+										<from>fabric8/s2i-java:latest-java11</from>
+										<fromMode>docker</fromMode>
+									</spring-boot>
+								</config>
+							</generator>
+						</configuration>
+				
+						<executions>
+							<execution>
+								<goals>
+									<goal>resource</goal>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>red-hat-ga-repository</id>
+			<url>https://maven.repository.redhat.com/ga</url>
+		</repository>
+		<repository>
+			<id>red-hat-early-access-repository</id>
+			<url>https://maven.repository.redhat.com/earlyaccess/all</url>
+		</repository>
+		<repository>
+			<id>jboss-early-access-repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/ea</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>red-hat-ga-repository</id>
+			<url>https://maven.repository.redhat.com/ga</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>red-hat-early-access-repository</id>
+			<url>https://maven.repository.redhat.com/earlyaccess/all</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>jboss-early-access-repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/ea</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!--
+	<distributionManagement>
+		<repository>
+			<id>nexus-srv-releases</id>
+			<name>Internal Releases</name>
+			<url>http://nexus3-nexus.192.168.42.130.nip.io/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-srv-snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://nexus3-nexus.192.168.42.130.nip.io/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>-->
+	
+	<distributionManagement>
+		<repository>
+			<id>nexus-srv-releases</id>
+			<name>Internal Releases</name>
+			<url>http://nexus3-nexus.apps-crc.testing/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-srv-snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://nexus3-nexus.apps-crc.testing/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+</project>
