@@ -27,7 +27,7 @@
 
 	<!-- LOG "com.baeldung*" at TRACE level -->
 	<logger name="com.redhat" level="trace" additivity="false">
-		<appender-ref ref="Console" />
+		<!-- <appender-ref ref="Console" /> -->
 			<appender-ref ref="CLOUD" />
 	</logger>
 </configuration>
